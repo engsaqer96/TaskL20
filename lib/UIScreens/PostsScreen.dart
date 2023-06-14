@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:trainapp/Controller/APIController.dart';
 import 'package:trainapp/Models/PostModel.dart';
 import 'package:trainapp/Widgits/PostItem.dart';
 
@@ -18,8 +19,8 @@ class _PostsScreenState extends State<PostsScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    getAllPosts();
-    getAllPosts().then((value) {
+
+    APIController.apiController.getAllPosts().then((value) {
       data=value;
       setState(() {
 
@@ -29,9 +30,17 @@ class _PostsScreenState extends State<PostsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        actions: [IconButton(
+          icon: Icon(Icons.request_page),
+          onPressed: (){
+            APIController.apiController.getAllPosts();
+          },
+        )],
+      ),
       body: data==null?Center(child: CircularProgressIndicator(),):
           ListView.builder(
+            physics: BouncingScrollPhysics(),
             itemCount: data?.length??0,
             itemBuilder: (context,index){
               return PostItem(
