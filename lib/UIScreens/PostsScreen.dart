@@ -45,7 +45,8 @@ class _PostsScreenState extends State<PostsScreen> {
             itemBuilder: (context,index){
               return PostItem(
                   title:data?[index].title,
-                  body:data?[index].body);
+                  body:data?[index].body,
+              comment_count:getPostsCount(data?[index].id),);
             },
           )
     );
@@ -64,5 +65,9 @@ class _PostsScreenState extends State<PostsScreen> {
     return list.map((e) {
       return PostModel.fromJson(e);
     } ).toList();
+  }
+
+  Future<int> getPostsCount(int post_id) async{
+    return await APIController.apiController.getPostsCommentNumber(post_id);
   }
 }

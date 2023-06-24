@@ -12,7 +12,6 @@ class APIController {
        connectTimeout: Duration(seconds: 60),
        receiveTimeout: Duration(seconds: 60),
        sendTimeout: Duration(seconds: 60),
-       headers: {'Authorization':'dskdjlasjdlkjkasljdlkasjdlkas,z'}
      ));
    }
     Future<List<PostModel>>getAllPosts() async{
@@ -28,4 +27,10 @@ class APIController {
     queryParameters: {'postId':post_id});
     return (response.data as List).map((e) => CommentModel.fromJson(e)).toList();
   }
+  Future<int> getPostsCommentNumber(int post_id) async{
+     var response=await _getDio().get('/comments?postId=$post_id');
+     print(response.data);
+     return (response.data as List).length;
+  }
+
 }
